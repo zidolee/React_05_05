@@ -1,0 +1,46 @@
+import {createStore, combineReducers, applyMiddleware, compose} from 'redux';
+import logger from 'redux-logger';
+
+const CHANGE_USER_NAME = 'CHANGE_USER_NAME'
+
+function changeUser(name) {
+    return {
+        type: CHANGE_USER_NAME,
+        name : name,
+    }
+}
+
+function userReducer(state = {name:'default name'}, action) {
+    switch(action.type) {
+        case CHANGE_USER_NAME:
+            return Object.assign({}, state, {
+                name : action.name
+            });
+        default: 
+            return state;
+    }
+}
+
+function articleReducer(state = {list : []}, action) {
+    switch(action.type) {
+        default: 
+            return state;
+    }
+}
+
+const store =  createStore(combineReducers({
+    user:userReducer,
+    article:articleReducer
+}),
+    //
+    compose(
+        applyMiddleware(logger),
+        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    )
+);
+
+// store.subscribe(() => {
+//     console.log(store.getState())
+// })
+
+// store.dispatch(changeUser('aa'))
